@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Signup - PingUp</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f0f2f5;
+      margin: 0;
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    input {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    .switch {
+      margin-top: 10px;
+      text-align: center;
+      cursor: pointer;
+      color: blue;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Signup</h2>
+
+  <input id="username" placeholder="Username" />
+  <input id="email" placeholder="Email" />
+  <input id="password" type="password" placeholder="Password" />
+
+  <button onclick="signup()">Signup</button>
+
+  <div class="switch" onclick="goLogin()">
+    Already have an account? Login
+  </div>
+</div>
+
+<script>
+async function signup() {
+  const username = document.getElementById("username").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  if (!username || !email || !password) {
+    alert("All fields required");
+    return;
+  }
+
+  const res = await fetch("http://localhost:5000/auth/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ username, email, password })
+  });
+
+  const data = await res.json();
+
+  if (data.msg) {
+    alert(data.msg);
+    window.location.href = "login.html";
+  } else {
+    alert("Signup failed");
+  }
+}
+
+function goLogin() {
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
